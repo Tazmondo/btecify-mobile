@@ -2,7 +2,7 @@ import {Image, StyleSheet, Text, View} from 'react-native'
 import {PlayFillSVG} from './Icon'
 import {MonoText} from "./StyledText";
 
-type PlaylistCardProps = {
+export type PlaylistCardProps = {
     title: string
     thumbnail: string
     songCount: number

@@ -1,11 +1,11 @@
 import {PlaylistCard, PlaylistCardProps} from "./PlaylistCard";
-import {ScrollView, View} from "react-native";
+import {ScrollView} from "react-native";
 import {useEffect, useState} from "react";
 import {Playlist} from "../schemas";
 
 const api = "http://raspberrypi.local:8000/"
 
-function getPlaylistCardPropsFromPlaylists(playlists: Playlist[]) {
+function apiToCardProps(playlists: Playlist[]) {
     return playlists.map(value => {
         return {
             'title': value.title,
@@ -30,12 +30,12 @@ export function PlaylistList(props: PlaylistListProps) {
             console.log("fetching playlists");
             let data = await fetch(api+"playlist")
             let json = await data.json() as Playlist[]
-            setPlaylists(getPlaylistCardPropsFromPlaylists(json))
+            setPlaylists(apiToCardProps(json))
         }
         if (props.playlists.length == 0) {
-            fetchPlaylists().catch(() => setPlaylists(getPlaylistCardPropsFromPlaylists(props.playlists)))
+            fetchPlaylists().catch(() => setPlaylists([]))
         } else {
-            setPlaylists(getPlaylistCardPropsFromPlaylists(props.playlists))
+            setPlaylists(apiToCardProps(props.playlists))
         }
 
         return () => {}

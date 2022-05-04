@@ -42,12 +42,13 @@ export function PlaylistCard(props: PlaylistCardProps) {
 const styles = StyleSheet.create({
     container: {
         backgroundColor: "#262626",
-        borderColor: "red",
+        borderColor: "#247e0b",
         borderWidth: 1,
         display: "flex",
         flexDirection: "row",
         borderRadius: 20,
-        padding: 15
+        padding: 15,
+        marginTop: 10
     },
     image: {
         width: 95,

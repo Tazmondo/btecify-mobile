@@ -1,5 +1,5 @@
 import {PlaylistCard, PlaylistCardProps} from "./PlaylistCard";
-import {ScrollView} from "react-native";
+import {ActivityIndicator, ScrollView} from "react-native";
 import {useEffect, useState} from "react";
 import {Playlist} from "../schemas";
 import {api} from '../constants/Api'
@@ -21,13 +21,11 @@ export type PlaylistListProps = {
 }
 
 export function PlaylistList(props: PlaylistListProps) {
-    console.log("rendering");
 
-    let [playlists, setPlaylists] = useState<PlaylistCardProps[]>([])
+    let [playlists, setPlaylists] = useState<PlaylistCardProps[] | undefined>()
 
     useEffect(() => {
         let fetchPlaylists = async () => {
-            console.log("fetching playlists");
             let data = await fetch(api + "/playlist")
             let json = await data.json() as Playlist[]
             setPlaylists(apiToCardProps(json))
@@ -39,11 +37,15 @@ export function PlaylistList(props: PlaylistListProps) {
         }
     }, [])
 
-    return <ScrollView>
-        {
-            playlists.map(playlist => {
-        return <PlaylistCard {...playlist} key={playlist.title}/>
-    })
-        }
-    </ScrollView>
+    if (playlists == undefined) {
+        return <ActivityIndicator size="large" color="#00ff00"></ActivityIndicator>
+    } else {
+        return <ScrollView>
+            {
+                playlists.map(playlist => {
+                    return <PlaylistCard {...playlist} key={playlist.title}/>
+                })
+            }
+        </ScrollView>
+    }
 }

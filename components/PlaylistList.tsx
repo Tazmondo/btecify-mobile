@@ -2,8 +2,8 @@ import {PlaylistCard, PlaylistCardProps} from "./PlaylistCard";
 import {ScrollView} from "react-native";
 import {useEffect, useState} from "react";
 import {Playlist} from "../schemas";
+import {api} from '../constants/Api'
 
-const api = "http://raspberrypi.local:8000/"
 
 function apiToCardProps(playlists: Playlist[]) {
     return playlists.map(value => {
@@ -11,7 +11,7 @@ function apiToCardProps(playlists: Playlist[]) {
             'title': value.title,
             'selected': false,
             'songCount': value.songs.length,
-            'thumbnail': api + "song/" + value.songs[Math.floor(Math.random() * value.songs.length)] + "/thumb"
+            'thumbnail': api + "/song/" + value.songs[Math.floor(Math.random() * value.songs.length)] + "/thumb"
         }
     })
 }
@@ -28,7 +28,7 @@ export function PlaylistList(props: PlaylistListProps) {
     useEffect(() => {
         let fetchPlaylists = async () => {
             console.log("fetching playlists");
-            let data = await fetch(api+"playlist")
+            let data = await fetch(api + "/playlist")
             let json = await data.json() as Playlist[]
             setPlaylists(apiToCardProps(json))
         }
@@ -37,8 +37,6 @@ export function PlaylistList(props: PlaylistListProps) {
         } else {
             setPlaylists(apiToCardProps(props.playlists))
         }
-
-        return () => {}
     }, [])
 
     return <ScrollView>

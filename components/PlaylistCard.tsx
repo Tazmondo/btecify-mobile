@@ -1,6 +1,8 @@
-import {Image, StyleSheet, Text, View} from 'react-native'
+import {Image, StyleSheet, View} from 'react-native'
 import {PlayFillSVG} from './Icon'
 import {MonoText} from "./StyledText";
+import {useEffect, useState} from "react";
+import {api} from '../constants/Api'
 
 export type PlaylistCardProps = {
     title: string
@@ -10,9 +12,24 @@ export type PlaylistCardProps = {
 }
 
 export function PlaylistCard(props: PlaylistCardProps) {
+    const [thumburl, setThumburl] = useState<string>("")
+
+    useEffect(() => {
+        let fetchThumb = async () => {
+            let response = await fetch(props.thumbnail)
+            if (response.status == 200) {
+                let thumbId = await response.json()
+                setThumburl(api + "/thumb/" + thumbId)
+            } else {
+                // todo: add a placeholder image
+            }
+        }
+        fetchThumb()
+    }, [])
+
     return (
         <View style={styles.container}>
-            <Image source={{uri: props.thumbnail}} style={styles.image} resizeMode={"cover"}/>
+            <Image source={thumburl === "" ? {} : {uri: thumburl}} style={styles.image} resizeMode={"cover"}/>
             <View style={styles.container2}>
                 <MonoText>{props.title}</MonoText>
                 <MonoText>{props.songCount} {props.songCount === 1 ? "song" : "songs"}</MonoText>

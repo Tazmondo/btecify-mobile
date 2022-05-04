@@ -1,5 +1,5 @@
 import {PlaylistCard, PlaylistCardProps} from "./PlaylistCard";
-import {ActivityIndicator, ScrollView} from "react-native";
+import {ActivityIndicator, ScrollView, StyleSheet, View} from "react-native";
 import {useEffect, useState} from "react";
 import {Playlist} from "../schemas";
 import {api} from '../constants/Api'
@@ -26,9 +26,11 @@ export function PlaylistList(props: PlaylistListProps) {
 
     useEffect(() => {
         let fetchPlaylists = async () => {
+            console.log("Fetching...");
             let data = await fetch(api + "/playlist")
             let json = await data.json() as Playlist[]
             setPlaylists(apiToCardProps(json))
+            console.log("Fetched.");
         }
         if (props.playlists.length == 0) {
             fetchPlaylists().catch(() => setPlaylists([]))
@@ -40,12 +42,28 @@ export function PlaylistList(props: PlaylistListProps) {
     if (playlists == undefined) {
         return <ActivityIndicator size="large" color="#00ff00"></ActivityIndicator>
     } else {
-        return <ScrollView>
-            {
-                playlists.map(playlist => {
-                    return <PlaylistCard {...playlist} key={playlist.title}/>
-                })
-            }
+        return <ScrollView style={styles.container}>
+            <View style={styles.container2}>
+                {
+                    playlists.map(playlist => {
+                        return <PlaylistCard {...playlist} key={playlist.title}/>
+                    })
+                }
+            </View>
         </ScrollView>
     }
 }
+
+const styles = StyleSheet.create({
+    container: {
+        width: "100%",
+
+    },
+    container2: {
+        display: "flex",
+        alignItems: "stretch",
+        justifyContent: "center",
+        flexDirection: "column",
+        paddingHorizontal: 50
+    }
+})

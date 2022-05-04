@@ -48,7 +48,10 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         borderRadius: 20,
         padding: 15,
-        marginTop: 10
+        marginTop: 10,
+        flexGrow: 1,
+        flexShrink: 0
+        // width: "max-content"
     },
     image: {
         width: 95,
@@ -59,5 +62,5 @@ const styles = StyleSheet.create({
         display: "flex",
         alignContent: "center",
         justifyContent: "center"
-    }
+    },
 })

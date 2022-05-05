@@ -3,8 +3,9 @@ import {View} from "./Themed";
 import {Image, Pressable, StyleSheet} from "react-native";
 import {useState} from "react";
 
-import TrackPlayer, {Event, useTrackPlayerEvents} from "react-native-track-player";
+import TrackPlayer, {Event, State, useTrackPlayerEvents} from "react-native-track-player";
 import {PauseSVG, PlaySVG, SkipSVG} from "./Icon";
+import {playlistInfo} from "../controllers/Playlist";
 
 const iconProps = {
     color: "#fff",
@@ -20,13 +21,46 @@ export default function Player() {
     const [paused, setPaused] = useState<boolean>(true)
     const [playlist, setPlaylist] = useState<string>("")
 
-    useTrackPlayerEvents([Event.PlaybackTrackChanged], async (event) => {
+    useTrackPlayerEvents([Event.PlaybackTrackChanged, Event.PlaybackState], async (event) => {
+        setPlaylist(playlistInfo.title ?? "")
         if (event.type == Event.PlaybackTrackChanged) {
-            console.log("track changed", event.track, event.position, event.nextTrack)
-            console.log(await TrackPlayer.getTrack(0))
-            await TrackPlayer.play()
+
+            let currentTrack = await TrackPlayer.getTrack(event.nextTrack)
+            let state = await TrackPlayer.getState()
+            console.log("state: " + state);
+
+            if (currentTrack == null) {
+                setImageUrl("")
+                setTitle("null track")
+                setArtist("null track")
+                setPosition(0)
+                setPaused(true)
+            } else {
+                console.log(currentTrack);
+                setImageUrl(currentTrack.artwork as string ?? "")
+                setTitle(currentTrack.title ?? "")
+                setArtist(currentTrack.artist ?? "")
+                setPosition(currentTrack.duration != null ? 100 * await TrackPlayer.getPosition() / (currentTrack.duration) : 0)
+                setPaused(!(state == State.Playing))
+            }
+        } else if (event.type == Event.PlaybackState) {
+            let state = event.state
+            console.log("state changed " + state);
+            setPaused(!(state == State.Playing))
         }
     })
+
+    function play() {
+        TrackPlayer.play()
+    }
+
+    function pause() {
+        TrackPlayer.pause()
+    }
+
+    function skip() {
+        TrackPlayer.skipToNext()
+    }
 
     // Player needs:
     //      Image on left
@@ -41,7 +75,7 @@ export default function Player() {
         </View>
     } else {
         return <View style={styles.container}>
-            <Image source={imageUrl != "" ? {uri: imageUrl} : {}} width={100} height={100}></Image>
+            <Image source={imageUrl != "" ? {uri: imageUrl} : {}} style={styles.image}></Image>
 
             <View style={styles.trackInfo}>
                 <MonoText>{title}</MonoText>
@@ -53,10 +87,16 @@ export default function Player() {
             </View>
 
             <View style={styles.buttons}>
-                <Pressable style={styles.icon}>
-                    {paused ? <PlaySVG {...iconProps}></PlaySVG> : <PauseSVG {...iconProps}></PauseSVG>}
-                </Pressable>
-                <Pressable style={styles.icon}>
+                {paused ?
+                    <Pressable style={styles.icon} onPress={play}>
+                        <PlaySVG {...iconProps}></PlaySVG>
+                    </Pressable>
+                    :
+                    <Pressable style={styles.icon} onPress={pause}>
+                        <PauseSVG {...iconProps}></PauseSVG>
+                    </Pressable>
+                }
+                <Pressable style={styles.icon} onPress={skip}>
                     <SkipSVG {...iconProps}></SkipSVG>
                 </Pressable>
             </View>
@@ -70,6 +110,7 @@ const styles = StyleSheet.create({
         display: "flex",
         flexDirection: "row",
         paddingHorizontal: 20,
+        alignItems: "center",
     },
     trackInfo: {
         display: "flex",
@@ -88,5 +129,10 @@ const styles = StyleSheet.create({
     },
     icon: {
         marginHorizontal: 3
+    },
+    image: {
+        width: 70,
+        height: 70,
+        marginRight: 5
     }
 })

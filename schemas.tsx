@@ -30,4 +30,5 @@ export type Song = {
     album: Album | null
     artist: Artist | null
     extractor: string | null
+    thumbId: string
 }

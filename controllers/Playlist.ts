@@ -29,13 +29,12 @@ export function updatePlaylist(props: playlistInfoType) {
     playlistInfo = props
     unbufferedSongs = []
     buffer = []
-
     TrackPlayer.getState().then(state => {
-        if (state != State.Playing) {
+        if (state == State.Stopped || state == State.None) {
+            // todo: do this logic
             getNextSongs().then(songs => {
                 return TrackPlayer.add(songs);
-            })
-                .then(() => TrackPlayer.play())
+            }).then(() => TrackPlayer.play())
         }
     })
 }
@@ -52,7 +51,10 @@ function getRandomSongs() {
 async function getSongInfo(id: number): Promise<Song> {
     let res = await fetch(api + "/song/" + id)
     if (res.status == 200) {
-        return await res.json()
+        let songInfo = await res.json()
+        let thumbId = await (await fetch(api + "/song/" + id + "/thumb")).json()
+
+        return {...songInfo, thumbId}
     } else {
         throw Error("Status was " + res.status)
     }
@@ -65,7 +67,8 @@ function songToTrack(song: Song): Track {
         title: song.title,
         artist: song.artist == null ? "" : song.artist.title,
         album: song.album == null ? "" : song.album.title,
-        duration: song.duration
+        duration: song.duration,
+        artwork: api + "/thumb/" + song.thumbId
     }
 }
 
@@ -83,12 +86,11 @@ export async function getNextSongs(): Promise<Track[]> {
     if (buffer.length >= infoBuffer) {
         response = buffer.splice(0, infoBuffer)
     }
-    console.log(infoBuffer, buffer.length)
     let numToAdd = (infoBuffer * 2) - buffer.length
     if (numToAdd > unbufferedSongs.length) {
         numToAdd = unbufferedSongs.length
     }
-    console.log(numToAdd);
+
     if (numToAdd > 0) {
         let newIds = unbufferedSongs.splice(0, numToAdd)
         let newSongs: Track[] = (await Promise.allSettled(newIds.map(id => getSongInfo(id))))

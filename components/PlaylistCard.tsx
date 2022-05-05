@@ -1,4 +1,4 @@
-import {Image, StyleSheet, View} from 'react-native'
+import {Image, Pressable, StyleSheet, View} from 'react-native'
 import {PlayFillSVG} from './Icon'
 import {MonoText} from "./StyledText";
 import {useEffect, useState} from "react";
@@ -27,13 +27,19 @@ export function PlaylistCard(props: PlaylistCardProps) {
         fetchThumb()
     }, [])
 
+    function play() {
+        console.log("Playing " + props.title)
+    }
+
     return (
         <View style={styles.container}>
             <Image source={thumburl === "" ? {} : {uri: thumburl}} style={styles.image} resizeMode={"cover"}/>
             <View style={styles.container2}>
                 <MonoText>{props.title}</MonoText>
                 <MonoText>{props.songCount} {props.songCount === 1 ? "song" : "songs"}</MonoText>
-                <PlayFillSVG color={"green"}/>
+                <Pressable onPress={play} style={({pressed}) => pressed ? styles.svgbutton : {}}>
+                    <PlayFillSVG color={"#00c200"} width={35} height={35}/>
+                </Pressable>
             </View>
         </View>
     )
@@ -49,8 +55,8 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         padding: 15,
         marginTop: 10,
-        flexGrow: 1,
-        flexShrink: 0
+        flex: 1,
+        justifyContent: "flex-start"
         // width: "max-content"
     },
     image: {
@@ -60,7 +66,13 @@ const styles = StyleSheet.create({
     },
     container2: {
         display: "flex",
-        alignContent: "center",
-        justifyContent: "center"
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        flexGrow: 1
     },
+    svgbutton: {
+        opacity: 0.8,
+        transform: [{scale: 1.1}]
+    }
 })

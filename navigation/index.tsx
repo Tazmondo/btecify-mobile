@@ -15,7 +15,6 @@ import useColorScheme from '../hooks/useColorScheme';
 import ModalScreen from '../screens/ModalScreen';
 import NotFoundScreen from '../screens/NotFoundScreen';
 import PlaylistScreen from '../screens/PlaylistScreen';
-import TabTwoScreen from '../screens/TabTwoScreen';
 import {RootStackParamList, RootTabParamList, RootTabScreenProps} from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
 
@@ -77,21 +76,21 @@ function BottomTabNavigator() {
                         <FontAwesome
                             name="info-circle"
                             size={25}
-                color={Colors[colorScheme].text}
-                style={{ marginRight: 15 }}
-              />
-            </Pressable>
-          ),
-        })}
-      />
-      <BottomTab.Screen
-        name="TabTwo"
-        component={TabTwoScreen}
-        options={{
-          title: 'Tab Two',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
-        }}
-      />
+                            color={Colors[colorScheme].text}
+                            style={{marginRight: 15}}
+                        />
+                    </Pressable>
+                ),
+            })}
+        />
+        {/*<BottomTab.Screen*/}
+        {/*  name="TabTwo"*/}
+        {/*  component={TabTwoScreen}*/}
+        {/*  options={{*/}
+        {/*    title: 'Tab Two',*/}
+        {/*    tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,*/}
+        {/*  }}*/}
+        {/*/>*/}
     </BottomTab.Navigator>
   );
 }

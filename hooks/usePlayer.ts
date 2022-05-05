@@ -10,7 +10,7 @@ export default function usePlayer() {
 
             // Copy pasted from the example in the reat native track player src repo
             await TrackPlayer.updateOptions({
-                stopWithApp: false,
+                stopWithApp: true,  // todo: make me false
                 capabilities: [
                     Capability.Play,
                     Capability.Pause,

@@ -8,10 +8,11 @@ import {api} from '../constants/Api'
 function apiToCardProps(playlists: Playlist[]) {
     return playlists.map(value => {
         return {
-            'title': value.title,
-            'selected': false,
-            'songCount': value.songs.length,
-            'thumbnail': api + "/song/" + value.songs[Math.floor(Math.random() * value.songs.length)] + "/thumb"
+            title: value.title,
+            selected: false,
+            songCount: value.songs.length,
+            thumbnail: api + "/song/" + value.songs[Math.floor(Math.random() * value.songs.length)] + "/thumb",
+            id: value.id
         }
     })
 }
@@ -43,7 +44,7 @@ export function PlaylistList(props: PlaylistListProps) {
         return <ActivityIndicator size="large" color="#00ff00"></ActivityIndicator>
     } else {
         return <ScrollView style={styles.container}>
-            <View style={styles.container2}>
+            <View style={styles.trackInfo}>
                 {
                     playlists.map(playlist => {
                         return <PlaylistCard {...playlist} key={playlist.title}/>
@@ -59,7 +60,7 @@ const styles = StyleSheet.create({
         width: "100%",
 
     },
-    container2: {
+    trackInfo: {
         display: "flex",
         alignItems: "stretch",
         justifyContent: "center",

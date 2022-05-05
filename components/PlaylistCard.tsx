@@ -9,6 +9,7 @@ export type PlaylistCardProps = {
     thumbnail: string
     songCount: number
     selected: boolean
+    id: number
 }
 
 export function PlaylistCard(props: PlaylistCardProps) {
@@ -34,7 +35,7 @@ export function PlaylistCard(props: PlaylistCardProps) {
     return (
         <View style={styles.container}>
             <Image source={thumburl === "" ? {} : {uri: thumburl}} style={styles.image} resizeMode={"cover"}/>
-            <View style={styles.container2}>
+            <View style={styles.trackInfo}>
                 <MonoText>{props.title}</MonoText>
                 <MonoText>{props.songCount} {props.songCount === 1 ? "song" : "songs"}</MonoText>
                 <Pressable onPress={play} style={({pressed}) => pressed ? styles.svgbutton : {}}>
@@ -64,7 +65,7 @@ const styles = StyleSheet.create({
         height: 95,
         marginRight: 10
     },
-    container2: {
+    trackInfo: {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",

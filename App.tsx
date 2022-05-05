@@ -5,7 +5,7 @@ import useCachedResources from './hooks/useCachedResources';
 import useColorScheme from './hooks/useColorScheme';
 import Navigation from './navigation';
 import usePlayer from "./hooks/usePlayer";
-import {Text} from "react-native";
+import Player from "./components/Player";
 
 export default function App() {
   const isLoadingComplete = useCachedResources();
@@ -18,7 +18,7 @@ export default function App() {
     return (
         <SafeAreaProvider>
             <Navigation colorScheme={colorScheme}/>
-            <Text>Hello!</Text>
+            <Player></Player>
             <StatusBar/>
         </SafeAreaProvider>
     );

@@ -3,7 +3,7 @@ import {View} from "./Themed";
 import {Image, Pressable, StyleSheet} from "react-native";
 import {useState} from "react";
 
-import {Event, useTrackPlayerEvents} from "react-native-track-player";
+import TrackPlayer, {Event, useTrackPlayerEvents} from "react-native-track-player";
 import {PauseSVG, PlaySVG, SkipSVG} from "./Icon";
 
 const iconProps = {
@@ -22,7 +22,9 @@ export default function Player() {
 
     useTrackPlayerEvents([Event.PlaybackTrackChanged], async (event) => {
         if (event.type == Event.PlaybackTrackChanged) {
-            console.log(event.track, event.position, event.nextTrack)
+            console.log("track changed", event.track, event.position, event.nextTrack)
+            console.log(await TrackPlayer.getTrack(0))
+            await TrackPlayer.play()
         }
     })
 

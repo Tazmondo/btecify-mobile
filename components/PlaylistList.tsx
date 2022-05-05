@@ -10,7 +10,7 @@ function apiToCardProps(playlists: Playlist[]) {
         return {
             title: value.title,
             selected: false,
-            songCount: value.songs.length,
+            songs: value.songs,
             thumbnail: api + "/song/" + value.songs[Math.floor(Math.random() * value.songs.length)] + "/thumb",
             id: value.id
         }

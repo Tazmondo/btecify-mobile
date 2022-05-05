@@ -3,11 +3,12 @@ import {PlayFillSVG} from './Icon'
 import {MonoText} from "./StyledText";
 import {useEffect, useState} from "react";
 import {api} from '../constants/Api'
+import {updatePlaylist} from '../controllers/Playlist'
 
 export type PlaylistCardProps = {
     title: string
     thumbnail: string
-    songCount: number
+    songs: number[]
     selected: boolean
     id: number
 }
@@ -29,6 +30,7 @@ export function PlaylistCard(props: PlaylistCardProps) {
     }, [])
 
     function play() {
+        updatePlaylist({title: props.title, songs: props.songs, id: props.id})
         console.log("Playing " + props.title)
     }
 
@@ -37,7 +39,7 @@ export function PlaylistCard(props: PlaylistCardProps) {
             <Image source={thumburl === "" ? {} : {uri: thumburl}} style={styles.image} resizeMode={"cover"}/>
             <View style={styles.trackInfo}>
                 <MonoText>{props.title}</MonoText>
-                <MonoText>{props.songCount} {props.songCount === 1 ? "song" : "songs"}</MonoText>
+                <MonoText>{props.songs.length} {props.songs.length === 1 ? "song" : "songs"}</MonoText>
                 <Pressable onPress={play} style={({pressed}) => pressed ? styles.svgbutton : {}}>
                     <PlayFillSVG color={"#00c200"} width={35} height={35}/>
                 </Pressable>

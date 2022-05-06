@@ -29,6 +29,7 @@ export function updatePlaylist(props: playlistInfoType) {
     playlistInfo = props
     unbufferedSongs = []
     buffer = []
+    TrackPlayer.removeUpcomingTracks()
     TrackPlayer.getState().then(state => {
         if (state == State.Stopped || state == State.None) {
             // todo: do this logic

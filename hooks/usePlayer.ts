@@ -17,6 +17,7 @@ export default function usePlayer() {
                     Capability.SkipToNext,
                     Capability.SkipToPrevious,
                     Capability.Stop,
+                    Capability.SeekTo
                 ],
                 compactCapabilities: [
                     Capability.Play,

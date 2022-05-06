@@ -11,6 +11,7 @@ export async function registerEvents() {
     });
     TrackPlayer.addEventListener(Event.RemoteNext, () => TrackPlayer.skipToNext());
     TrackPlayer.addEventListener(Event.RemotePrevious, () => TrackPlayer.skipToPrevious());
+    TrackPlayer.addEventListener(Event.RemoteSeek, ({position}) => TrackPlayer.seekTo(position))
 
     TrackPlayer.addEventListener(Event.PlaybackQueueEnded, () => {
         getNextSongs().then(async (tracks) => {

@@ -110,6 +110,7 @@ const styles = StyleSheet.create({
         display: "flex",
         flexDirection: "row",
         paddingHorizontal: 20,
+        paddingTop: 5,
         alignItems: "center",
     },
     trackInfo: {
@@ -119,13 +120,16 @@ const styles = StyleSheet.create({
     },
     middle: {
         display: "flex",
-        flexDirection: "column"
+        flexDirection: "column",
+        alignSelf: "flex-end",
+        marginBottom: 25
     },
     buttons: {
         display: "flex",
         flexDirection: "row",
         justifyContent: "flex-end",
-        alignItems: "center",
+        alignSelf: "flex-end",
+        marginBottom: 15
     },
     icon: {
         marginHorizontal: 3

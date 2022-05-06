@@ -1,4 +1,4 @@
-import TrackPlayer, {State, Track} from "react-native-track-player";
+import TrackPlayer, {Track} from "react-native-track-player";
 import {Song} from "../schemas";
 import {api} from "../constants/Api";
 
@@ -29,14 +29,10 @@ export function updatePlaylist(props: playlistInfoType) {
     playlistInfo = props
     unbufferedSongs = []
     buffer = []
-    TrackPlayer.removeUpcomingTracks()
-    TrackPlayer.getState().then(state => {
-        if (state == State.Stopped || state == State.None) {
-            // todo: do this logic
-            getNextSongs().then(songs => {
-                return TrackPlayer.add(songs);
-            }).then(() => TrackPlayer.play())
-        }
+    TrackPlayer.removeUpcomingTracks().then(() => {
+        getNextSongs().then(res => {
+            TrackPlayer.add(res).then(() => TrackPlayer.play())
+        })
     })
 }
 

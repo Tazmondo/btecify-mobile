@@ -20,6 +20,15 @@ export async function registerEvents() {
     })
 
     TrackPlayer.addEventListener(Event.PlaybackState, async () => {
-        console.log(await TrackPlayer.getQueue())
+        console.log("\n\nQueue: ")
+        let curQueue = await TrackPlayer.getQueue()
+        let curIndex = await TrackPlayer.getCurrentTrack()
+        let songsLeft = curQueue.length - curIndex
+
+        console.log(`songs left: ${songsLeft}`)
+
+        if (songsLeft < 5) {
+            await TrackPlayer.add(await getNextSongs())
+        }
     })
 }

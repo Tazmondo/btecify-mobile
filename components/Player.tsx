@@ -36,7 +36,7 @@ export default function Player() {
                 setPosition(0)
                 setPaused(true)
             } else {
-                console.log(currentTrack);
+                console.log("Title: " + currentTrack.title);
                 setImageUrl(currentTrack.artwork as string ?? "")
                 setTitle(currentTrack.title ?? "")
                 setArtist(currentTrack.artist ?? "")

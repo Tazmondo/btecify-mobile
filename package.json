@@ -8,7 +8,8 @@
     "web": "expo start --web",
     "eject": "expo eject",
     "test": "jest --watchAll",
-    "build-dev": "eas build --platform android --profile development"
+    "build-dev": "eas build --platform android --profile development",
+    "build-preview": "eas build --platform android --profile preview"
   },
   "jest": {
     "preset": "jest-expo"
